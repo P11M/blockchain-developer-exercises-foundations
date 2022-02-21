@@ -72,28 +72,13 @@ log.info("Executing ", courseModule);
     
     log.info("Sending a Request to Overledger for the Specific Block 10463066");
     const overledgerLatestBlockResponse = await overledgerInstance.post(
-      "/autoexecution/search/block/10463066",
+      "/autoexecution/search/block/10463066",     //Paste your wanted blockID right into the number field
       overledgerRequestMetaData,
     );
     
     log.info(
       `Printing Out Overledger's Response:\n\n${JSON.stringify(
         overledgerLatestBlockResponse.data,
-      )}\n\n`,
-    );
-    
-    log.info("Sending a Request to Overledger for the Parent Block (Using BlockId Search)");
-    const parentBlockId =
-      overledgerLatestBlockResponse.data.executionBlockSearchResponse.block
-        .linkedBlocks.parent;
-    const overledgerParentBlockResponse = await overledgerInstance.post(
-      `/autoexecution/search/block/${parentBlockId}`,
-      overledgerRequestMetaData,
-    );
-
-    log.info(
-      `Printing Out Overledger's Response:\n\n${JSON.stringify(
-        overledgerParentBlockResponse.data,
       )}\n\n`,
     );
   } catch (e) {
