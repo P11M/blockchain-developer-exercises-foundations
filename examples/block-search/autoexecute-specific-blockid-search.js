@@ -74,7 +74,7 @@ log.info("Executing ", courseModule);
     log.info("Sending a Request to Overledger for your Specific Block");
     const  overLedgerSpecificBlock = await overledgerInstance.post(
       "autoexecution/search/block/${blockID}",
-      iverkedgerRequestMetaData,
+      overledgerRequestMetaData,
       );
     
     log.info("Sending a Request to Overledger for the Latest Block");
