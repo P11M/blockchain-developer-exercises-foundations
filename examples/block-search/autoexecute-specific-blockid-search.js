@@ -70,12 +70,6 @@ log.info("Executing ", courseModule);
     const overledgerInstance = overledger.provider.createRequest(
       refreshTokensResponse.accessToken.toString(),
     );
-
-    log.info("Sending a Request to Overledger for your Specific Block");
-    const  overLedgerSpecificBlock = await overledgerInstance.post(
-      "autoexecution/search/block/${blockID}",
-      overledgerRequestMetaData,
-      );
     
     log.info("Sending a Request to Overledger for the Latest Block");
     const overledgerLatestBlockResponse = await overledgerInstance.post(
