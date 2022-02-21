@@ -70,12 +70,18 @@ log.info("Executing ", courseModule);
       refreshTokensResponse.accessToken.toString(),
     );
     
-    log.info("Sending a Request to Overledger for the Latest Block");
+    log.info("Sending a Request to Overledger for the Specific Block 10463066");
     const overledgerLatestBlockResponse = await overledgerInstance.post(
       "/autoexecution/search/block/10463066",
       overledgerRequestMetaData,
     );
-
+    
+    log.info(
+      `Printing Out Overledger's Response:\n\n${JSON.stringify(
+        overledgerLatestBlockResponse.data,
+      )}\n\n`,
+    );
+    
     log.info("Sending a Request to Overledger for the Parent Block (Using BlockId Search)");
     const parentBlockId =
       overledgerLatestBlockResponse.data.executionBlockSearchResponse.block
