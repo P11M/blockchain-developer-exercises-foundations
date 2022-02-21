@@ -70,9 +70,9 @@ log.info("Executing ", courseModule);
       refreshTokensResponse.accessToken.toString(),
     );
     
-    log.info("Sending a Request to Overledger for the Specific Block 10463066");
+    log.info("Sending a Request to Overledger for the Specific Block 12000700");
     const overledgerLatestBlockResponse = await overledgerInstance.post(
-      "/autoexecution/search/block/10463066",     //Paste your wanted blockID right into the number field
+      "/autoexecution/search/block/12000700",     //Paste your wanted blockID right into the number field
       overledgerRequestMetaData,
     );
     
