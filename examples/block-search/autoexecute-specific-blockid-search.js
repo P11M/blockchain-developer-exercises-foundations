@@ -7,7 +7,6 @@ const OverledgerTypes = require("@quantnetwork/overledger-types");
 const OverledgerSDK = OverledgerBundle.default;
 const courseModule = "specific-blockid-search";
 const { DltNameOptions } = OverledgerTypes;
-const blockId = '12000627';
 
 const log = log4js.getLogger(courseModule);
 
@@ -73,7 +72,7 @@ log.info("Executing ", courseModule);
     
     log.info("Sending a Request to Overledger for the Latest Block");
     const overledgerLatestBlockResponse = await overledgerInstance.post(
-      "/autoexecution/search/block/latest",
+      "/autoexecution/search/block/10463066",
       overledgerRequestMetaData,
     );
 
