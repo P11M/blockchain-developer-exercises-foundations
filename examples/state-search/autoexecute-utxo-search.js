@@ -90,7 +90,7 @@ log.info("Executing ", courseModule);
     );
     const blockNumber =
       overledgerBlockResponse.data.executionBlockSearchResponse.block.number -
-      20;
+      16;
     log.info(`Asking Overledger for the Block 20 Back from the Latest`);
     overledgerBlockResponse = await overledgerInstance.post(
       `/autoexecution/search/block/${blockNumber}`,
