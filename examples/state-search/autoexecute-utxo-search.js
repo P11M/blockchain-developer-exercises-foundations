@@ -99,7 +99,7 @@ log.info("Executing ", courseModule);
             `Asking Overledger for UTXO in Transaction `,
           );
           overledgerUTXOResponse = await overledgerInstance.post(
-            `/autoexecution/search/utxo/mxVFsFW5N4mu1HPkxPttorvocvzeZ7KZyk`,
+            `/autoexecution/search/utxo/4`,
             overledgerRequestMetaData,
           );
           utxoStatus =
