@@ -72,7 +72,7 @@ log.info("Executing ", courseModule);
 
     log.info(`Asking Overledger for the Specific Block`);
     overledgerBlockResponse = await overledgerInstance.post(
-      `/autoexecution/search/block/54a6739234dcc42dd490b0a7fc53123d1219f9507863fc4a4ca803bf06e77660`,
+      `/autoexecution/search/block/2164734`,
       overledgerRequestMetaData,
     );
     const transactionsInBlock =
@@ -86,7 +86,7 @@ log.info("Executing ", courseModule);
 
         // query Overledger for this transaction
         overledgerTransactionResponse = await overledgerInstance.post(
-          `/autoexecution/search/transaction?transactionId=2095c9a3acef16fb9b994ba2349fc9b04910eb09ddd3ad2b05c4add9406bbb14`,
+          `/autoexecution/search/transaction?transactionId=54a6739234dcc42dd490b0a7fc53123d1219f9507863fc4a4ca803bf06e77660`,
           overledgerRequestMetaData,
         );
         utxoCount =
