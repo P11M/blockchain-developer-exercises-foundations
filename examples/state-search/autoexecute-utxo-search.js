@@ -110,14 +110,6 @@ log.info("Executing ", courseModule);
             thisUtxoAmount =
               overledgerUTXOResponse.data.executionUtxoSearchResponse
                 .destination[0].payment.amount;
-            if (thisUtxoAmount > maxUtxoAmount) {
-              maxUtxoAmount = thisUtxoAmount;
-              maxUtxoId = utxoId;
-              maxUtxoDestination =
-                overledgerUTXOResponse.data.executionUtxoSearchResponse
-                  .destination[0].destinationId;
-              overledgerUTXOMaxBalanceResponse = overledgerUTXOResponse;
-            }
     }
   } catch (e) {
     log.error("error", e);
