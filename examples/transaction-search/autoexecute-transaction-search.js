@@ -69,95 +69,18 @@ log.info("Executing ", courseModule);
     const overledgerInstance = overledger.provider.createRequest(
       refreshTokensResponse.accessToken.toString(),
     );
-
-    log.info("Locating the Latest Payment Transaction on the Blockchain");
-    let locatedPaymentTransaction = false;
-    let numberOfTransactionsInBlock;
-    let transactionsInBlockCounter;
-    let transactionId;
-    let overledgerTransactionResponse;
-    let overledgerBlockResponse;
-    let blockToSearch = "latest";
-
-    while (locatedPaymentTransaction === false) {
-      log.info(`Asking Overledger for Block: ${blockToSearch}`);
-      overledgerBlockResponse = await overledgerInstance.post(
-        `/autoexecution/search/block/${blockToSearch}`,
-        overledgerRequestMetaData,
-      );
-
-      transactionsInBlockCounter =
-        overledgerBlockResponse.data.executionBlockSearchResponse.block
-          .numberOfTransactions - 1;
-      log.info(
-        `Transactions in Block = ${overledgerBlockResponse.data.executionBlockSearchResponse.block.numberOfTransactions}`,
-      );
-      // check if there is any transactions in this block
-      while (transactionsInBlockCounter < 0) {
-        // if there is no transactions then ...
-        log.info(
-          `Block Number ${overledgerBlockResponse.data.executionBlockSearchResponse.block.number} does not have any transactions`,
-        );
-        log.info("Therefore searching for previous block...");
-        blockToSearch =
-          overledgerBlockResponse.data.executionBlockSearchResponse.block
-            .number - 1;
-        overledgerBlockResponse = await overledgerInstance.post(
-          `/autoexecution/search/block/${blockToSearch}`,
+        
+        log.info("Sending a Request to Overledger for the Specific Block 00000000000002b91476d0843c95906ca2f05da5401f5bcf7eeb21e8338b083a");
+        const overledgerLatestBlockResponse = await overledgerInstance.post(
+         "/autoexecution/search/block/00000000000002b91476d0843c95906ca2f05da5401f5bcf7eeb21e8338b083a",     //Paste your wanted blockID right into the number field
           overledgerRequestMetaData,
         );
-        transactionsInBlockCounter =
-          overledgerBlockResponse.data.executionBlockSearchResponse.block
-            .numberOfTransactions - 1;
-      }
-      log.info(
-        `Block number ${overledgerBlockResponse.data.executionBlockSearchResponse.block.number} includes transactions`,
-      );
-      log.info(
-        `Transactions in Block = ${overledgerBlockResponse.data.executionBlockSearchResponse.block.numberOfTransactions}`,
-      );
-      // start from the last transaction of the block (as blockchains process from transaction 1 of the block to transaction n)
-      log.info(
-        `Payment Transaction Search Will Start From Transaction Number: ${transactionsInBlockCounter}`,
-      );
-
-      while (transactionsInBlockCounter >= 0) {
-        // get n'th transaction id
-        log.info(
-          `Asking Overledger for Transaction ${transactionsInBlockCounter} in Block ${blockToSearch}`,
-        );
-        transactionId =
-          overledgerBlockResponse.data.executionBlockSearchResponse.block
-            .transactionIds[transactionsInBlockCounter];
-        log.info(`The Id of this Transaction is ${transactionId}`);
-        // query Overledger for this transaction
+        
         overledgerTransactionResponse = await overledgerInstance.post(
-          `/autoexecution/search/transaction?transactionId=${transactionId}`,
+          `/autoexecution/search/transaction?transactionId=2095c9a3acef16fb9b994ba2349fc9b04910eb09ddd3ad2b05c4add9406bbb14`,
           overledgerRequestMetaData,
         );
-        log.info(
-          `The Type of this Transaction is ${overledgerTransactionResponse.data.executionTransactionSearchResponse.type}`,
-        );
-        if (
-          overledgerTransactionResponse.data.executionTransactionSearchResponse
-            .type === "PAYMENT"
-        ) {
-          transactionsInBlockCounter = numberOfTransactionsInBlock;
-          locatedPaymentTransaction = true;
-        } else {
-          transactionsInBlockCounter -= 1;
-        }
-      }
 
-      if (locatedPaymentTransaction === false) {
-        log.info(
-          `No Payment Transactions Found in Block Number ${overledgerBlockResponse.data.executionBlockSearchResponse.block.number}`,
-        );
-        blockToSearch =
-          overledgerBlockResponse.data.executionBlockSearchResponse.block
-            .number - 1;
-      }
-    }
 
     log.info(
       `Printing Out Overledger's Response:\n\n${JSON.stringify(
