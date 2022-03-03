@@ -70,30 +70,9 @@ log.info("Executing ", courseModule);
       refreshTokensResponse.accessToken.toString(),
     );
 
-    log.info("Locating the Largest Unspent UTXO in a recent Block");
-    let transactionId;
-    let overledgerTransactionResponse;
-    let overledgerUTXOResponse;
-    let utxoCount;
-    let utxoId;
-    let thisUtxoAmount;
-    let maxUtxoAmount = 0;
-    let maxUtxoId;
-    let maxUtxoDestination;
-    let overledgerUTXOMaxBalanceResponse;
-    let utxoStatus;
-
-    log.info(`Asking Overledger for the Latest Block`);
-    let overledgerBlockResponse = await overledgerInstance.post(
-      `/autoexecution/search/block/latest`,
-      overledgerRequestMetaData,
-    );
-    const blockNumber =
-      overledgerBlockResponse.data.executionBlockSearchResponse.block.number -
-      15;
-    log.info(`Asking Overledger for the Block 20 Back from the Latest`);
+    log.info(`Asking Overledger for the Specific Block`);
     overledgerBlockResponse = await overledgerInstance.post(
-      `/autoexecution/search/block/${blockNumber}`,
+      `/autoexecution/search/block/54a6739234dcc42dd490b0a7fc53123d1219f9507863fc4a4ca803bf06e77660`,
       overledgerRequestMetaData,
     );
     const transactionsInBlock =
@@ -103,23 +82,11 @@ log.info("Executing ", courseModule);
       `Transactions in Block = ${overledgerBlockResponse.data.executionBlockSearchResponse.block.numberOfTransactions}`,
     );
 
-    // check if there is any transactions in this block
-    if (transactionsInBlock < 0) {
-      log.info(`The latest block has no transactions. Please try again later`);
-    } else {
-      let counter = 0;
-      while (counter <= transactionsInBlock) {
-        // get n'th transaction id
-        log.info(
-          `Asking Overledger for Transaction ${counter} in Block ${blockNumber}`,
-        );
-        transactionId =
-          overledgerBlockResponse.data.executionBlockSearchResponse.block
-            .transactionIds[counter];
-        log.info(`The Id of this Transaction is ${transactionId}`);
+    // check for your transaction
+
         // query Overledger for this transaction
         overledgerTransactionResponse = await overledgerInstance.post(
-          `/autoexecution/search/transaction?transactionId=${transactionId}`,
+          `/autoexecution/search/transaction?transactionId=2095c9a3acef16fb9b994ba2349fc9b04910eb09ddd3ad2b05c4add9406bbb14`,
           overledgerRequestMetaData,
         );
         utxoCount =
@@ -128,13 +95,11 @@ log.info("Executing ", courseModule);
         log.info(
           `This Transaction has ${overledgerTransactionResponse.data.executionTransactionSearchResponse.transaction.destination.length} destinations`,
         );
-        while (utxoCount >= 0) {
-          utxoId = `${transactionId}:${utxoCount.toString()}`;
           log.info(
-            `Asking Overledger for UTXO ${utxoCount} in Transaction ${counter}`,
+            `Asking Overledger for UTXO in Transaction `,
           );
           overledgerUTXOResponse = await overledgerInstance.post(
-            `/autoexecution/search/utxo/${utxoId}`,
+            `/autoexecution/search/utxo/mxVFsFW5N4mu1HPkxPttorvocvzeZ7KZyk`,
             overledgerRequestMetaData,
           );
           utxoStatus =
@@ -152,26 +117,6 @@ log.info("Executing ", courseModule);
                   .destination[0].destinationId;
               overledgerUTXOMaxBalanceResponse = overledgerUTXOResponse;
             }
-          }
-          utxoCount -= 1;
-        }
-        counter += 1;
-      }
-
-      const balanceUnit =
-        overledgerUTXOResponse.data.executionUtxoSearchResponse.destination[0]
-          .payment.unit;
-      log.info();
-      log.info(`In Block ${blockNumber}:`);
-      log.info(`The Largest UTXO is: ${maxUtxoId}`);
-      log.info(`The Address with the Largest UTXO is: ${maxUtxoDestination}`);
-      log.info(`This UTXO has locked: ${maxUtxoAmount} ${balanceUnit}`);
-
-      log.info(
-        `Overledger's Response For the Max UTXO Was:\n\n${JSON.stringify(
-          overledgerUTXOMaxBalanceResponse.data,
-        )}\n\n`,
-      );
     }
   } catch (e) {
     log.error("error", e);
