@@ -62,7 +62,7 @@ log.info("Executing ", courseModule);
     );
     const overledgerRequestMetaData = {
       location: {
-        technology: "Bitcoin",
+        technology: "XRP Ledger",
         network: "Testnet",
       },
     };
@@ -72,12 +72,12 @@ log.info("Executing ", courseModule);
         
         log.info("Sending a Request to Overledger for the Specific Block 00000000000002b91476d0843c95906ca2f05da5401f5bcf7eeb21e8338b083a");
         const overledgerLatestBlockResponse = await overledgerInstance.post(
-         "/autoexecution/search/block/00000000000002b91476d0843c95906ca2f05da5401f5bcf7eeb21e8338b083a",     //Paste your wanted blockID right into the number field
+         "/autoexecution/search/block/2d93817e322899dacc04ede7bd7329be1e175f7dd510ecdb7049aa9bb501aebe",     //Paste your wanted blockID right into the number field
           overledgerRequestMetaData,
         );
         
         overledgerTransactionResponse = await overledgerInstance.post(
-          `/autoexecution/search/transaction?transactionId=2095c9a3acef16fb9b994ba2349fc9b04910eb09ddd3ad2b05c4add9406bbb14`,
+          `/autoexecution/search/transaction?transactionId=0c4a82a5b3756dafa6ef05832a10ca7ffdf8eabe9fcb92c3e49f59fabc7b7243`,
           overledgerRequestMetaData,
         );
 
